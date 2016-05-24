@@ -1,0 +1,141 @@
+body {
+  margin:0;
+  background:#EDEFF0;
+  font-family:arial;
+}
+.wrapper {
+  max-width:700px;
+  margin:0 auto;
+}
+.header {
+  background:#026AA7;
+  position:fixed;
+  top:0;
+  z-index:100;
+  width:100%;
+}
+.header h1 {
+  margin:0;
+  padding:20px;
+  font-size:16px;
+  font-weight:bold;
+  color:#80B4D3;
+}
+.header h1 .login-out-btn {
+  float:right;
+  margin:-10px 0 0 0;
+  padding:10px;
+  border-radius:4px;
+}
+.header h1 .login-out-btn:hover {
+  cursor:pointer;
+  color:#E6F0F6;
+  background:#3588B9;
+}
+.header .profile-img {
+  height:30px;
+  position:absolute;
+  top:15px;
+  left:46%;
+  border-radius:50%;
+}
+.progress-bar-outer {
+  height:4px;
+  background:#ddd;
+}
+.progress-bar-inner {
+  height:4px;
+  background:#33cc33;
+  width:0%;
+  transition: width 500ms;
+}
+.content-wrapper {
+  padding:20px;
+  margin-top:50px;
+}
+.ui-div {
+  display:none;
+}
+.element-label {
+  //display:none;
+  font-size:16px;
+  font-weight:bold;
+  color:#777;
+  //letter-spacing:3px;
+  margin:20px 0 10px 0;
+}
+.search-box {
+  font-size:16px;
+  border:1px solid #d4d4d4;
+  border-radius:6px;
+  padding:20px;
+  width:100%;
+  margin-bottom:20px;
+  -webkit-appearance: none;
+  -webkit-box-sizing: border-box; /* For legacy WebKit based browsers */
+     -moz-box-sizing: border-box; /* For legacy (Firefox <29) Gecko based browsers */
+          box-sizing: border-box;
+}
+.loader-img {
+  display:block;
+  margin:50px auto;
+}
+.cards {
+  list-style-type:none;
+  padding:0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.cards li {
+  color:#777;
+  position:relative;
+  transition: transform 400ms;
+}
+.cards li a {
+  display:block;
+  text-decoration:none;
+  font-weight:bold;
+  color:#333;
+  font-size:16px;
+  padding:20px;
+  border:1px solid #EDEFF0;
+  border-radius:6px;
+}
+.cards li a:hover {
+  background:#fff;
+  border:1px solid #d4d4d4;
+}
+.cards li a span {
+  color:#777;
+  font-weight:400;
+  font-size:13px;
+}
+.cards li img {
+  position:absolute;
+  right:5px;
+  bottom:5px;
+  border-radius:3px;
+}
+.cards .card-placeholder {
+  height:60px;
+  border:2px dashed #d4d4d4;
+  border-radius:6px;
+}
+.card-dragging {
+  box-shadow:0 10px 10px -3px #AAA;
+  opacity:.3;
+  transform: scale(.8, .8);
+}
+.stricken {
+  text-decoration:line-through;
+  color:#ccc;
+}
+.footer {
+  display:block;
+  text-align:center;
+  text-decoration:none;
+  color:#00CCFF;
+  font-size:11px;
+  color:#999;
+  margin:50px 0;
+}
