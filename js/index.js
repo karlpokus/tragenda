@@ -68,9 +68,14 @@ var cards = {
     };
     // get cards and include board name
     Trello.get('search', params, function(cardsAndBoards){
-      // render all
   	  cards.render(cardsAndBoards.cards, tag);
     });
+  },
+  dayDiff: function(f, s) {
+    var f = new Date(f),
+        s = new Date(s),
+        oneDay = 24*60*60*1000;
+    return Math.round((f.getTime() - s.getTime())/(oneDay));
   },
   render: function(cardsAndBoards, tag) {
     // vars
@@ -91,16 +96,39 @@ var cards = {
     // loop
     cardsAndBoards.forEach(function(card){
       // el
-      var $li = $('<li/>'),
-          $a  = $('<a/>')
-            .attr({href: card.url, target: "_blank"})
-            .text(card.name),
-          $span = $('<span/>').text(" in " + card.list.name + " on " + card.board.name);
+      $li = $('<li/>');
+      $a = $('<a/>')
+        .attr({href: card.url, target: "_blank"})
+        .text(card.name),
+      $span = $('<span/>');
+      // due
+      if (card.due) {
+        var diff = this.dayDiff(new Date(card.due), new Date());
+        if (diff <= 0) {
+          $span.html(" &middot; " + card.board.name + " &middot; Past due!");
+        } else {
+          $span.html(" &middot; " + card.board.name + " &middot; Due in " + diff + " days");
+        }        
+      } else {
+        $span.html(" &middot; " + card.board.name);
+      }
+      // members
+      if (card.members.length > 0) {
+        $p = $('<p/>');
+        card.members.forEach(function(member){
+          // el
+          var $img = $('<img/>').attr('src', 'https://trello-avatars.s3.amazonaws.com/' + member.avatarHash + '/170.png');
+          // dom
+          $img.appendTo($p);
+        });
+        $a.append($span, $p);        
+      } else {        
+        $a.append($span);
+      }
       // mix and append
-      $span.appendTo($a);
       $a.appendTo($li);
       $li.appendTo($cards);
-    });
+    }, this);
     // progressbar
     progressBar.calc().render();
     // set all jQuery UI stuff
