@@ -108,13 +108,16 @@ body {
 .cards li a span {
   color:#777;
   font-weight:400;
-  font-size:13px;
+  font-size:16px;
 }
-.cards li img {
-  position:absolute;
-  right:5px;
-  bottom:5px;
-  border-radius:3px;
+.cards li a p {
+  height:30px;
+  margin:5px 0 0 0;
+}
+.cards li a p img {
+  height:30px;
+  margin-right:5px;
+  border-radius:4px;
 }
 .cards .card-placeholder {
   height:60px;
