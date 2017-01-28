@@ -3,10 +3,9 @@ var user = {
     console.error('Authorization failed');
   },
   login: function() {
-    // authorize
-    Trello.authorize({  
+    Trello.authorize({
       interactive:true,
-      type: 'redirect', // 'popup'
+      type: 'redirect', // or 'popup'
       success:user.display,
       error: user.onAuthorizeError,
       name:"Tragenda",
@@ -14,36 +13,27 @@ var user = {
     });
   },
   logout: function() {
-    // empty results
     $('.cards').empty();
-    // progressbar
     progressBar.reboot().render();
-    // remove profile-imng
+    // update UI
     $('.profile-img').fadeOut(400, function(){
-      // hide ui-div
       $('.ui-div').slideToggle(400, function(){
-        // update login
         $('.login-out-btn').text('Login');
       });
-    });  
-    // logout
+    });
     Trello.deauthorize();
   },
   display: function() {
-    //
     Trello.members.get("me", function(member){
-      // el
       var $header = $('.header'),
           $img = $('<img/>')
           .attr('src', 'https://trello-avatars.s3.amazonaws.com/' + member.avatarHash + '/170.png')
           .addClass('profile-img');
-      // dom
+      // update UI
       $img.hide().appendTo($header).fadeIn(400, function(){
-        // show search
         $('.ui-div').slideToggle(400, function(){
-          // update login
           $('.login-out-btn').text('Logout');
-        });        
+        });
       });
     });
   }
@@ -56,7 +46,7 @@ var cards = {
     var params = {
       query: queryString,
       //idOrganizations:
-      //modelTypes: 'all', 
+      //modelTypes: 'all',
       cards_limit: 100,
       boards_limit: 100,
       card_board: true,
@@ -66,7 +56,6 @@ var cards = {
       board_fields: 'name',
       member_fields: 'avatarHash'
     };
-    // get cards and include board name
     Trello.get('search', params, function(cardsAndBoards){
   	  cards.render(cardsAndBoards.cards, tag);
     });
@@ -78,24 +67,16 @@ var cards = {
     return Math.round((f.getTime() - s.getTime())/(oneDay));
   },
   render: function(cardsAndBoards, tag) {
-    // vars
     var $cards = $(this.el);
-    // check result and set label
     if (cardsAndBoards.length === 0) {
-      // set label
       loader.stop('No cards found by #' + tag);
-      // progressbar
       progressBar.reboot().render();
-      // ignore the rest
       return;
     }
-    // results > 0 set label
+    // results > 0
     loader.stop(cardsAndBoards.length + ' cards found by #' + tag);
-    // empty results
     $cards.empty();
-    // loop
     cardsAndBoards.forEach(function(card){
-      // el
       $li = $('<li/>');
       $a = $('<a/>')
         .attr({href: card.url, target: "_blank"})
@@ -108,7 +89,7 @@ var cards = {
           $span.html(" &middot; " + card.board.name + " &middot; Past due!");
         } else {
           $span.html(" &middot; " + card.board.name + " &middot; Due in " + diff + " days");
-        }        
+        }
       } else {
         $span.html(" &middot; " + card.board.name);
       }
@@ -116,20 +97,17 @@ var cards = {
       if (card.members.length > 0) {
         $p = $('<p/>');
         card.members.forEach(function(member){
-          // el
           var $img = $('<img/>').attr('src', 'https://trello-avatars.s3.amazonaws.com/' + member.avatarHash + '/170.png');
-          // dom
           $img.appendTo($p);
         });
-        $a.append($span, $p);        
-      } else {        
+        $a.append($span, $p);
+      } else {
         $a.append($span);
       }
       // mix and append
       $a.appendTo($li);
       $li.appendTo($cards);
     }, this);
-    // progressbar
     progressBar.calc().render();
     // set all jQuery UI stuff
     $(".cards").sortable({
@@ -151,23 +129,16 @@ var loader = {
   start: function() {
     var that = this,
         i = 0;
-    // set timer
     this.timer = setInterval(function(){
-      // reset if past array
       if (i > 2) {
-        // reset
-        i = 0; 
+        i = 0;
       }
-      // dom
       $(that.el).html(that.loaderStrings[i]);
-      // inc
       i++;
-    }, 500);    
+    }, 500);
   },
   stop: function(str) {
-    // kill timer
     clearInterval(this.timer);
-    // set label
     $(this.el).text(str);
   }
 };
@@ -178,78 +149,56 @@ var progressBar = {
   stricken: 0,
   progress: 0,
   calc: function() {
-    // count rows
     this.rows = $(this.el).length;
-    // check
     if (this.rows > 0) {
-      // reset
       this.stricken = 0;
-      // count isStricken
       $(this.el).each(function(i){
         if ($(this).hasClass('stricken')) {
           progressBar.stricken++;
         }
       });
-      // calc progress
       this.progress = Math.ceil(this.stricken / this.rows *100);
     }
-    // for chaining
     return this;
   },
   render: function() {
     $('.progress-bar-inner').css('width', progressBar.progress + "%");
   },
   reboot: function() {
-    // reset
     this.progress = 0;
-    // for chaining
     return this;
   }
 };
 
 // EVENTS
 
-// toggle stricken on cards
+// click card
 $('.cards').on('click', 'li a', function(e){
-  // check class
   var isStricken = $(this).parent().hasClass('stricken');
-  // toggle class
   if (isStricken) {
-    // stop link
     e.preventDefault();
   }
-  // toggle class eitherway
   $(this).parent().toggleClass('stricken');
-  // progressbar
   progressBar.calc().render();
 });
 
-// Search
+// do search
 $('#search-form').on('submit', function(e){
-  // set loader
   loader.start();
-  // clear
   $('.cards').empty();
-  // get user input
   var tag = $('.search-box').val().toLowerCase().trim();
-  // remove focus
   $('.search-box').blur();
-  // search
   cards.search(tag);
-  // fix
   return false;
 });
 
 // login/logout
 $('.login-out-btn').on('click', function(){
-  // set flag
-  var isLoggedIn = Trello.authorized();
-  // check
-  if (isLoggedIn) {
+  if (Trello.authorized()) {
     user.logout();
   } else {
     user.login();
-  }  
+  }
 });
 
 // prop interactive -> If false, don’t redirect or popup, only use the stored token

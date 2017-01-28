@@ -1,0 +1,28 @@
+{
+  "name": "tragenda",
+  "version": "1.1.0",
+  "description": "Simple agenda for Trello teams",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karlpokus/tragenda.git"
+  },
+  "keywords": [
+    "trello",
+    "agenda",
+    "teams",
+    "cards"
+  ],
+  "author": "Karl Pokus <karl.pokus@gmail.com> (https://github.com/karlpokus)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/karlpokus/tragenda/issues"
+  },
+  "homepage": "https://github.com/karlpokus/tragenda#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
