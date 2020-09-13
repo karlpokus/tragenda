@@ -27,7 +27,7 @@ var user = {
     Trello.members.get("me", function(member){
       var $header = $('.header'),
           $img = $('<img/>')
-          .attr('src', 'https://trello-avatars.s3.amazonaws.com/' + member.avatarHash + '/170.png')
+          .attr('src', member.avatarUrl + '/170.png')
           .addClass('profile-img');
       // update UI
       $img.hide().appendTo($header).fadeIn(400, function(){
@@ -97,7 +97,7 @@ var cards = {
       if (card.members.length > 0) {
         $p = $('<p/>');
         card.members.forEach(function(member){
-          var $img = $('<img/>').attr('src', 'https://trello-avatars.s3.amazonaws.com/' + member.avatarHash + '/170.png');
+          var $img = $('<img/>').attr('src', member.avatarUrl + '/170.png');
           $img.appendTo($p);
         });
         $a.append($span, $p);
