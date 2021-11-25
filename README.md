@@ -16,5 +16,9 @@ Simple agenda for Trello teams
 - Works on mobile devices
 - Uses simple auhentication client side with [client.js](https://developers.trello.com/get-started/start-building) from Trello
 
+# Bugs
+- [x] broken avatars - fixed 2020-09
+- [x] Wildcard allowed origins no longer supported - fixed 2021-11
+
 # License
 MIT
