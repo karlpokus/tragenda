@@ -16,8 +16,5 @@ Simple agenda for Trello teams
 - Works on mobile devices
 - Uses simple auhentication client side with [client.js](https://developers.trello.com/get-started/start-building) from Trello
 
-# Demo
-- Demo at [codepen](http://codepen.io/KarlPokus/debug/a1d690fc435a466bbf3637ac65ec193c)
-
 # License
 MIT
