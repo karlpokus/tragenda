@@ -140,5 +140,14 @@ body {
   color:#00CCFF;
   font-size:11px;
   color:#999;
-  margin:50px 0;
+  margin:50px 0 0 0;
+}
+.version {
+  display:block;
+  text-align:center;
+  text-decoration:none;
+  color:#00CCFF;
+  font-size:11px;
+  color:#999;
+  margin:10px 0;
 }
