@@ -6,8 +6,8 @@ var user = {
     Trello.authorize({
       interactive:true,
       type: 'redirect', // or 'popup'
-      success:user.display,
-      error: user.onAuthorizeError,
+      success:user.display, // never fires due to TRELLO-141569
+      error: user.onAuthorizeError, // never fires due to TRELLO-141569
       name:"Tragenda",
       expiration:"1day"
     });
@@ -201,8 +201,36 @@ $('.login-out-btn').on('click', function(){
   }
 });
 
-// prop interactive -> If false, don’t redirect or popup, only use the stored token
-Trello.authorize({
-    interactive:false,
-    success: user.display
-});
+// Because of the bad regex in issue TRELLO-141569 none of the callbacks
+// to Trello.authorize() will ever fire. So we're gonna grab the token
+// from the url hash ourselves right here after being redirected back from
+// the trello Authorization page.
+const properRegexToken = /[&#]?token=([0-9a-fA-Z]{76})/;
+const match = properRegexToken.exec(location.hash);
+const saveToken = function(v) {
+  if (localStorage == null) {
+    console.error("localstorage unavailable. token will not be saved");
+    return
+  }
+  var key = 'trello_token'; // same key used in client.js
+  localStorage[key] = v;
+};
+if (match && !Trello.authorized()) {
+  var token = match[1];
+  console.log("token found in hash");
+  Trello.setToken(token);
+  saveToken(token);
+  if (Trello.authorized()) {
+    user.display();
+  } else {
+    console.error("Trello.authorized still false")
+  }
+  location.hash = location.hash.replace(properRegexToken, '');
+} else {
+  console.log("no token in hash");
+  // prop interactive -> If false, don’t redirect or popup, only use the stored token
+  Trello.authorize({
+      interactive:false,
+      success: user.display
+  });
+}
